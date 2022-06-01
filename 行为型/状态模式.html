@@ -42,19 +42,6 @@
                 }
             }
 
-            insertQuarter() {
-                this.state.insertQuarter();
-            }
-
-            ejectQuarter() {
-                this.state.ejectQuarter();
-            }
-
-            turnCrank() {
-                this.state.turnCrank()
-                this.state.dispense();
-            }
-
             setState(state) {
                 this.state = state;
             }
@@ -66,6 +53,23 @@
                         print('卡槽中已经有糖果了');
                     }, 2000);
                 }
+            }
+
+            getCount() {
+                return this.count;
+            }
+
+            insertQuarter() {
+                this.state.insertQuarter();
+            }
+
+            ejectQuarter() {
+                this.state.ejectQuarter();
+            }
+
+            turnCrank() {
+                this.state.turnCrank()
+                this.state.dispense();
             }
 
             getHasQuarterState() {
@@ -84,9 +88,7 @@
                 return this.soldOutState;
             }
 
-            getCount() {
-                return this.count;
-            }
+
         }
 
         // 状态超类
@@ -98,9 +100,10 @@
 
         /*******四个状态类******/
         class NoQuarterState extends State {
-            // 塞入硬币
+            //在机器没有塞硬币的状态下，塞入硬币
             insertQuarter() {
                 print('塞进去了一个硬币');
+                //用状态里的机器引用给机器设置状态为有硬币状态
                 this.gumballMachine.setState(this.gumballMachine.getHasQuarterState());
             }
 
@@ -147,10 +150,11 @@
             }
             dispense() {
                 this.gumballMachine.releaseBall();
+                // 用机器里糖果的剩余量判断，分配了糖果后要设置为没投入硬币状态，还是卖完状态
                 if (this.gumballMachine.getCount() > 0) {
                     this.gumballMachine.setState(this.gumballMachine.getNoQuarterState());
                 } else {
-                    print('正好卖完。。。');
+                    print('正好卖完！！！');
                     this.gumballMachine.setState(this.gumballMachine.getSoldOutState());
                 }
             }
