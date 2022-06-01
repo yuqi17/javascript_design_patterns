@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8' />
+    <style>
+        [type=button] {
+            width: 120px;
+            height: 30px;
+            background: #FF6100;
+            color: white;
+            margin: 15px;
+            border: 1px solid #999999;
+        }
+
+        [type=button]:hover {
+            cursor: pointer;
+            background: #FF863E;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <input type=' button' id='insertQuarter' value='投币' />
+        <input type='button' id='ejectQuarter' value='退钱' />
+        <input type='button' id='turnCrank' value='转动曲柄' />
+        <p></p>
+    </section>
+    <script>
+        'use strict'
+        // 糖果机类
+        class GumballMachine {
+            constructor(numberGumballs) {
+                this.soldOutState = new SoldOutState(this);
+                this.noQuarterState = new NoQuarterState(this);
+                this.hasQuarterState = new HasQuarterState(this);
+                this.soldState = new SoldState(this);
+                this.count = numberGumballs;
+                if (numberGumballs > 0) {
+                    this.state = this.noQuarterState;
+                }
+            }
+            insertQuarter() {
+                this.state.insertQuarter();
+            }
+            ejectQuarter() {
+                this.state.ejectQuarter();
+            }
+            turnCrank() {
+                this.state.turnCrank()
+                this.state.dispense();
+            }
+            setState(state) {
+                this.state = state;
+            }
+            releaseBall() {
+                if (this.count != 0) {
+                    this.count = this.count - 1;
+                }
+                setTimeout(function () {
+                    print('卡槽中已经有糖果了');
+                }, 2000);
+            }
+            getHasQuarterState() {
+                return this.hasQuarterState;
+            }
+            getNoQuarterState() {
+                return this.noQuarterState;
+            }
+            getSoldState() {
+                return this.soldState;
+            }
+            getSoldOutState() {
+                return this.soldOutState;
+            }
+            getCount() {
+                return this.count;
+            }
+        }
+
+        // 状态超类
+        class State {
+            constructor(gumballMachine) {
+                this.gumballMachine = gumballMachine;
+            }
+        }
+        /*******四个状态类******/
+        class NoQuarterState extends State {
+            insertQuarter() {
+                print('塞进去了一个硬币');
+                this.gumballMachine.setState(this.gumballMachine.getHasQuarterState());
+            }
+            ejectQuarter() {
+                print('还没有塞进硬币');
+            }
+            turnCrank() {
+                print('别转了你还没赛钱呢');
+            }
+            dispense() {
+                print('钱呢？');
+            }
+        }
+
+        class HasQuarterState extends State {
+            insertQuarter() {
+                print('不能再塞进另一个硬币');
+            }
+            ejectQuarter() {
+                print('钱返回给你了');
+                this.gumballMachine.setState(this.gumballMachine.getNoQuarterState());
+            }
+            turnCrank() {
+                print('你转过了');
+                this.gumballMachine.setState(this.gumballMachine.getSoldState());
+            }
+            dispense() {
+                print('你白赛钱了');
+            }
+        }
+
+        class SoldState extends State {
+            insertQuarter() {
+                print('请等待，正在售出中');
+            }
+            ejectQuarter() {
+                print('你已经转动曲柄了');
+            }
+            turnCrank() {
+                print('转动两次也不会给你两个糖果的');
+            }
+            dispense() {
+                this.gumballMachine.releaseBall();
+                if (this.gumballMachine.getCount() > 0) {
+                    this.gumballMachine.setState(this.gumballMachine.getNoQuarterState());
+                } else {
+                    print('正好卖完。。。');
+                    this.gumballMachine.setState(this.gumballMachine.getSoldOutState());
+                }
+            }
+        }
+
+        class SoldOutState extends State {
+            insertQuarter() {
+                print('已经卖完，不能塞进硬币');
+            }
+            ejectQuarter() {
+                print('你还没塞进硬币呢，怎么还你？');
+            }
+            turnCrank() {
+                print('没货了，转也是白转');
+            }
+            dispense() {
+                print('没货！');
+            }
+        }
+
+        // 只有三个糖果。。
+        var machine = new GumballMachine(3);
+        var print = function (msg) {
+            document.querySelector('p').innerHTML = msg;
+        }
+        document.querySelector('#insertQuarter').onclick = function () { machine.insertQuarter() }
+        document.querySelector('#ejectQuarter').onclick = function () { machine.ejectQuarter() }
+        document.querySelector('#turnCrank').onclick = function () { machine.turnCrank() }
+    </script>
+</body>
+
+</html>
