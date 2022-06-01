@@ -41,19 +41,24 @@
                     this.state = this.noQuarterState;
                 }
             }
+
             insertQuarter() {
                 this.state.insertQuarter();
             }
+
             ejectQuarter() {
                 this.state.ejectQuarter();
             }
+
             turnCrank() {
                 this.state.turnCrank()
                 this.state.dispense();
             }
+
             setState(state) {
                 this.state = state;
             }
+
             releaseBall() {
                 if (this.count != 0) {
                     this.count = this.count - 1;
@@ -62,18 +67,23 @@
                     print('卡槽中已经有糖果了');
                 }, 2000);
             }
+
             getHasQuarterState() {
                 return this.hasQuarterState;
             }
+
             getNoQuarterState() {
                 return this.noQuarterState;
             }
+
             getSoldState() {
                 return this.soldState;
             }
+
             getSoldOutState() {
                 return this.soldOutState;
             }
+
             getCount() {
                 return this.count;
             }
@@ -85,18 +95,24 @@
                 this.gumballMachine = gumballMachine;
             }
         }
+
         /*******四个状态类******/
         class NoQuarterState extends State {
+            // 塞入硬币
             insertQuarter() {
                 print('塞进去了一个硬币');
                 this.gumballMachine.setState(this.gumballMachine.getHasQuarterState());
             }
+
             ejectQuarter() {
                 print('还没有塞进硬币');
             }
+
+            // 摇动曲柄
             turnCrank() {
                 print('别转了你还没赛钱呢');
             }
+            // 分配
             dispense() {
                 print('钱呢？');
             }
