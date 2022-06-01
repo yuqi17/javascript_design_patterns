@@ -62,10 +62,10 @@
             releaseBall() {
                 if (this.count != 0) {
                     this.count = this.count - 1;
+                    setTimeout(function () {
+                        print('卡槽中已经有糖果了');
+                    }, 2000);
                 }
-                setTimeout(function () {
-                    print('卡槽中已经有糖果了');
-                }, 2000);
             }
 
             getHasQuarterState() {
