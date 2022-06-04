@@ -15,4 +15,6 @@ generalization 泛化: 即类对接口的实现
 
 另 [UML 图的看法](https://blog.csdn.net/zhaxun/article/details/124048871)
 
+### 总结： 三角实现是泛化，三角虚线是实现；依赖虚线箭头；单向关联实线箭头数字，双向关联数字实线两头；聚合空心菱形；组合实心菱形，
+
 
