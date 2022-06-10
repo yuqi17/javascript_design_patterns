@@ -1,5 +1,6 @@
 /**
  * The Subject interface declares a set of methods for managing subscribers.
+ * 这里是发布订阅模式和观察者模式的区别: https://zhuanlan.zhihu.com/p/51357583 发布订阅严格来说是一种架构模式,相当于在观察者和订阅者之间加了一个Broker中间人来管理消息队列
  */
 interface Subject {
 	// Attach an observer to the subject.
